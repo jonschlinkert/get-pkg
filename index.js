@@ -21,6 +21,9 @@ module.exports = function getPkg(name, version, cb) {
 
   lazy.request(url + version, {}, function (err, res) {
     if (err) return cb(err);
+    if (res.statusCode === 500) {
+      return cb(new Error(res.statusMessage));
+    }
     var pkg = JSON.parse(res.body);
     if (pkg.error && pkg.reason) {
       return cb(new Error(pkg.reason));

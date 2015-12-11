@@ -28,4 +28,12 @@ describe('getPackages', function () {
       cb();
     });
   });
+
+  it('should handle empty string', function (cb) {
+    getPkg('', function(err, pkg) {
+      assert(err);
+      assert.equal(err.message, 'Internal Server Error');
+      cb();
+    });
+  });
 });
