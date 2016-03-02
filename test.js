@@ -36,4 +36,13 @@ describe('getPackages', function () {
       cb();
     });
   });
+
+  it('should handle scoped packages', function (cb) {
+    getPkg('@cycle/core', function(err, pkg) {
+      assert(!err);
+      assert(pkg);
+      assert.equal(pkg.name, '@cycle/core');
+      cb();
+    });
+  });
 });

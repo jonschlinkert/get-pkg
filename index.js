@@ -15,9 +15,14 @@ module.exports = function getPkg(name, version, cb) {
     cb = version;
     version = '';
   }
+  if (isScoped(name)) {
+    name = '@' + encodeURIComponent(name.slice(1));
+    version = ''; // npm does not allow version for scoped packages
+  } else if (!version) {
+    version = 'latest';
+  }
 
   var url = 'https://registry.npmjs.org/' + name + '/';
-  if (!version) version = 'latest';
 
   lazy.request(url + version, {}, function (err, res) {
     if (err) return cb(err);
@@ -30,4 +35,8 @@ module.exports = function getPkg(name, version, cb) {
     }
     cb(null, pkg);
   });
+}
+
+function isScoped(name) {
+  return name && name[0] === '@';
 }
