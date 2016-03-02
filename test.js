@@ -11,8 +11,8 @@ require('mocha');
 var assert = require('assert');
 var getPkg = require('./');
 
-describe('getPackages', function () {
-  it('should get a package.json for the given project', function (cb) {
+describe('getPackages', function() {
+  it('should get a package.json for the given project', function(cb) {
     getPkg('generate', function(err, pkg) {
       assert(!err);
       assert(pkg);
@@ -21,7 +21,7 @@ describe('getPackages', function () {
     });
   });
 
-  it('should handle errors', function (cb) {
+  it('should handle errors', function(cb) {
     getPkg('fofofofofofoofofof', function(err, pkg) {
       assert(err);
       assert.equal(err.message, 'document not found');
@@ -29,7 +29,7 @@ describe('getPackages', function () {
     });
   });
 
-  it('should handle empty string', function (cb) {
+  it('should handle empty string', function(cb) {
     getPkg('', function(err, pkg) {
       assert(err);
       assert.equal(err.message, 'Internal Server Error');
@@ -37,7 +37,7 @@ describe('getPackages', function () {
     });
   });
 
-  it('should handle scoped packages', function (cb) {
+  it('should handle scoped packages', function(cb) {
     getPkg('@cycle/core', function(err, pkg) {
       assert(!err);
       assert(pkg);

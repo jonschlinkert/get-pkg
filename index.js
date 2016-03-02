@@ -7,8 +7,7 @@
 
 'use strict';
 
-var lazy = require('lazy-cache')(require);
-lazy('min-request', 'request');
+var request = require('min-request');
 
 module.exports = function getPkg(name, version, cb) {
   if (typeof version === 'function') {
@@ -24,7 +23,7 @@ module.exports = function getPkg(name, version, cb) {
 
   var url = 'https://registry.npmjs.org/' + name + '/';
 
-  lazy.request(url + version, {}, function (err, res) {
+  request(url + version, {}, function(err, res) {
     if (err) return cb(err);
     if (res.statusCode === 500) {
       return cb(new Error(res.statusMessage));
@@ -35,7 +34,7 @@ module.exports = function getPkg(name, version, cb) {
     }
     cb(null, pkg);
   });
-}
+};
 
 function isScoped(name) {
   return name && name[0] === '@';
