@@ -23,7 +23,8 @@
     "min-request": "^1.4.1"
   },
   "devDependencies": {
-    "mocha": "*"
+    "gulp-format-md": "^0.1.7",
+    "mocha": "^2.4.5"
   },
   "keywords": [
     "get",
@@ -37,6 +38,15 @@
     "pkgs"
   ],
   "verb": {
+    "run": true,
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
     "related": {
       "list": [
         "get-pkgs",
@@ -44,7 +54,11 @@
       ]
     },
     "reflinks": [
-      "get-pkgs"
-    ]
+      "get-pkgs",
+      "verb"
+    ],
+    "lint": {
+      "reflinks": true
+    }
   }
 }
