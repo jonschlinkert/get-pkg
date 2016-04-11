@@ -28,6 +28,12 @@ module.exports = function getPkg(name, version, cb) {
     if (res.statusCode === 500) {
       return cb(new Error(res.statusMessage));
     }
+    if (res.statusCode === 404) {
+      var error = new Error('document not found');
+      error.code = res.statusCode;
+      error.pkgName = name;
+      return cb(error);
+    }
     var pkg = JSON.parse(res.body);
     if (pkg.error && pkg.reason) {
       return cb(new Error(pkg.reason));
