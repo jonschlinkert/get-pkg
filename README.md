@@ -20,6 +20,13 @@ var getPkg = require('get-pkg');
 getPkg('generate', function(err, pkg) {
   console.log(pkg);
 });
+
+//specify a registry
+getPkg('generate', {
+  registry: 'https://registry.npm.taobao.org/'
+}, function(err, pkg) {
+  console.log(pkg);
+});
 ```
 
 ## Related projects

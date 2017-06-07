@@ -9,21 +9,33 @@
 
 var request = require('min-request');
 
-module.exports = function getPkg(name, version, cb) {
-  if (typeof version === 'function') {
-    cb = version;
-    version = '';
+var OFFICIAL_REGISTRY = 'https://registry.npmjs.org/';
+
+module.exports = function getPkg(name, opts, cb) {
+  if (typeof opts === 'function') {
+    cb = opts;
+    opts = {
+      version: '',
+      registry: OFFICIAL_REGISTRY
+    };
   }
+
+  if (!opts.registry) {
+    opts.registry = OFFICIAL_REGISTRY;
+  } else if (opts.registry.lastIndexOf('/') !== opts.registry.length - 1) {
+    opts.registry = opts.registry + '/';
+  }
+
   if (isScoped(name)) {
     name = '@' + encodeURIComponent(name.slice(1));
-    version = ''; // npm does not allow version for scoped packages
-  } else if (!version) {
-    version = 'latest';
+    opts.version = ''; // npm does not allow version for scoped packages
+  } else if (!opts.version) {
+    opts.version = 'latest';
   }
 
-  var url = 'https://registry.npmjs.org/' + name + '/';
+  var url = opts.registry + name + '/';
 
-  request(url + version, {}, function(err, res) {
+  request(url + opts.version, {}, function(err, res) {
     if (err) return cb(err);
     if (res.statusCode === 500) {
       return cb(new Error(res.statusMessage));

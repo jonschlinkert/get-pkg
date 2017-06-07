@@ -45,4 +45,17 @@ describe('getPackages', function() {
       cb();
     });
   });
+
+  it('should handle specific registry', function(cb) {
+    getPkg('angular', {
+      registry: 'https://registry.npm.taobao.org/'
+    }, function(err, pkg) {
+      assert(!err);
+      assert(pkg);
+      assert.equal(pkg.name, 'angular');
+      cb();
+    });
+  });
+
+
 });
