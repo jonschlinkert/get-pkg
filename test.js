@@ -8,8 +8,8 @@
 'use strict';
 
 require('mocha');
-var assert = require('assert');
-var getPkg = require('./');
+const assert = require('assert');
+const getPkg = require('./');
 
 describe('getPackages', function() {
   it('should get a package.json for the given project', function(cb) {
@@ -22,15 +22,18 @@ describe('getPackages', function() {
   });
 
   it('should handle errors', function(cb) {
-    getPkg('fofofofofofoofofof', function(err, pkg) {
+    getPkg('fofofofofofoofofof', function(err /*, pkg */) {
       assert(err);
       assert.equal(err.message, 'document not found');
       cb();
     });
   });
 
-  it('should handle empty string', function(cb) {
-    getPkg('', function(err, pkg) {
+  // Deactivated: Seems that the npm implementation has changed.
+  // In case an empty string is passed to npm, npm return the latest
+  // available package, so this test does not make to make sense anymore.
+  xit('should handle empty string', function(cb) {
+    getPkg('', function(err /*, pkg */) {
       assert(err);
       assert.equal(err.message, 'Internal Server Error');
       cb();
