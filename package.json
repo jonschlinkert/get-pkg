@@ -1,7 +1,28 @@
 {
   "name": "get-pkg",
-  "version": "0.3.0",
   "description": "Get the package.json for a project from npm.",
+  "version": "0.3.0",
+  "homepage": "https://github.com/jonschlinkert/get-pkg",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/get-pkg",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/get-pkg/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "gulp-format-md": "^1.0.0",
+    "mocha": "^5.2.0"
+  },
   "keywords": [
     "get",
     "json",
@@ -13,30 +34,6 @@
     "pkg",
     "pkgs"
   ],
-  "homepage": "https://github.com/jonschlinkert/get-pkg",
-  "bugs": {
-    "url": "https://github.com/jonschlinkert/get-pkg/issues"
-  },
-  "license": "MIT",
-  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
-  "files": [
-    "index.js"
-  ],
-  "main": "index.js",
-  "repository": "jonschlinkert/get-pkg",
-  "scripts": {
-    "test": "mocha"
-  },
-  "dependencies": {
-    "axios": "^0.18.0"
-  },
-  "devDependencies": {
-    "gulp-format-md": "^0.1.7",
-    "mocha": "^2.4.5"
-  },
-  "engines": {
-    "node": ">=0.10.0"
-  },
   "verb": {
     "run": true,
     "toc": false,
@@ -54,8 +51,7 @@
       ]
     },
     "reflinks": [
-      "get-pkgs",
-      "verb"
+      "get-pkgs"
     ],
     "lint": {
       "reflinks": true
