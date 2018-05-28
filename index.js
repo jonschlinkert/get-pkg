@@ -1,8 +1,8 @@
 /*!
- * get-pkgs <https://github.com/jonschlinkert/get-pkgs>
+ * get-pkg <https://github.com/jonschlinkert/get-pkg>
  *
  * Copyright (c) 2014-present, Jon Schlinkert.
- * Licensed under the MIT License.
+ * Released under the MIT License.
  */
 
 'use strict';
@@ -14,6 +14,7 @@ module.exports = function getPkg(name, version, cb) {
     cb = version;
     version = '';
   }
+
   if (isScoped(name)) {
     name = '@' + encodeURIComponent(name.slice(1));
     version = ''; // npm does not allow version for scoped packages
@@ -21,24 +22,27 @@ module.exports = function getPkg(name, version, cb) {
     version = 'latest';
   }
 
-  const url = 'https://registry.npmjs.org/' + name + '/';
-
-  request.get(url + version)
-    .then(function(res) {
-      cb(null, res.data);
-    })
-    .catch(function(err) {
+  const promise = request.get(`https://registry.npmjs.org/${name}/${version}`)
+    .then(res => res.data)
+    .catch(err => {
       if (err.response.status === 500) {
-        return cb(new Error(err.response.status));
+        return Promise.reject(new Error(err.response.status));
       }
       if (err.response.status === 404) {
         const error = new Error('document not found');
         error.code = err.response.status;
         error.pkgName = name;
-        return cb(error);
+        return Promise.reject(error);
       }
-      return cb(err);
+      return Promise.reject(err);
     });
+
+  if (typeof cb === 'function') {
+    promise.then(res => cb(null, res)).catch(cb);
+    return;
+  }
+
+  return promise;
 };
 
 function isScoped(name) {
