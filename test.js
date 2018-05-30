@@ -12,6 +12,8 @@ const assert = require('assert');
 const getPkg = require('./');
 
 describe('getPackages', function() {
+  this.timeout(5000);
+
   it('should get a package.json for the given project', function(cb) {
     getPkg('generate', function(err, pkg) {
       assert(!err);
@@ -37,12 +39,11 @@ describe('getPackages', function() {
     });
   });
 
-  it('should handle scoped packages', function(cb) {
-    getPkg('@cycle/core', function(err, pkg) {
-      assert(!err);
-      assert(pkg);
-      assert.equal(pkg.name, '@cycle/core');
-      cb();
-    });
+  it('should handle scoped packages', function() {
+    return getPkg('@sellside/emitter')
+      .then(pkg => {
+        assert(pkg)
+        assert.equal(pkg.name, '@sellside/emitter');
+      });
   });
 });

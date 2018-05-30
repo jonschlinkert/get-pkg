@@ -7,7 +7,7 @@
 
 'use strict';
 
-const request = require('axios');
+const axios = require('axios');
 
 module.exports = function getPkg(name, version, cb) {
   if (typeof version === 'function') {
@@ -22,19 +22,33 @@ module.exports = function getPkg(name, version, cb) {
     version = 'latest';
   }
 
-  const promise = request.get(`https://registry.npmjs.org/${name}/${version}`)
-    .then(res => res.data)
+  function request(url) {
+    return axios.get(`${url}/${name}/${version}`)
+      .then(res => res.data)
+      .catch(err => {
+        if (err.response.status === 500) {
+          return Promise.reject(new Error(err.response.status));
+        }
+        if (err.response.status === 404) {
+          const error = new Error('document not found');
+          error.code = err.response.status;
+          error.pkgName = name;
+          return Promise.reject(error);
+        }
+        return Promise.reject(err);
+      });
+  }
+
+  // the following code hits the yarn CNAME (they call it a "proxy")
+  // when npm's registry fails. In practice, this usually won't make a
+  // difference since yarn is pseudo-proxying npm's registry in the
+  // first place, but in the case of CDN failure, it might help.
+  const promise = request('https://registry.npmjs.org')
     .catch(err => {
-      if (err.response.status === 500) {
-        return Promise.reject(new Error(err.response.status));
-      }
-      if (err.response.status === 404) {
-        const error = new Error('document not found');
-        error.code = err.response.status;
-        error.pkgName = name;
-        return Promise.reject(error);
-      }
-      return Promise.reject(err);
+      return request('https://registry.yarnpkg.com')
+        .catch(() => {
+          return Promise.reject(err);
+        })
     });
 
   if (typeof cb === 'function') {
