@@ -11,11 +11,11 @@ require('mocha');
 const assert = require('assert');
 const getPkg = require('./');
 
-describe('getPackages', function() {
+describe('get-pkg', function() {
   this.timeout(5000);
 
-  it('should get a package.json for the given project', function(cb) {
-    getPkg('generate', function(err, pkg) {
+  it('should get a package.json for the given project', cb => {
+    getPkg('generate', (err, pkg) => {
       assert(!err);
       assert(pkg);
       assert.equal(pkg.name, 'generate');
@@ -23,7 +23,7 @@ describe('getPackages', function() {
     });
   });
 
-  it('should return a promise', function() {
+  it('should return a promise', () => {
     return getPkg('generate')
       .then(pkg => {
         assert(pkg);
@@ -31,15 +31,15 @@ describe('getPackages', function() {
       });
   });
 
-  it('should handle errors', function(cb) {
-    getPkg('fofofofofofoofofof', function(err /*, pkg */) {
+  it('should handle errors', cb => {
+    getPkg('fofofofofofoofofof', (err /*, pkg */) => {
       assert(err);
       assert.equal(err.message, 'document not found');
       cb();
     });
   });
 
-  it('should handle scoped packages', function() {
+  it('should handle scoped packages', () => {
     return getPkg('@sellside/emitter')
       .then(pkg => {
         assert(pkg)
